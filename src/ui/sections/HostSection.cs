@@ -1,6 +1,9 @@
-﻿using HydraMenu.features;
+﻿using BepInEx.Unity.IL2CPP.Utils.Collections;
+using HydraMenu.features;
 using InnerNet;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace HydraMenu.ui.sections
 {
@@ -10,6 +13,8 @@ namespace HydraMenu.ui.sections
 		{
 			name = "Host";
 		}
+
+		private byte selectedMap = 0;
 
 		public override void Render()
 		{
@@ -83,7 +88,9 @@ namespace HydraMenu.ui.sections
 			}
 			GUILayout.EndHorizontal();
 
+			GUILayout.Space(5);
 			GUILayout.Label("Map Spawner/Despawner:");
+
 			GUILayout.BeginHorizontal();
 			if(GUILayout.Button("Spawn Lobby"))
 			{
@@ -108,23 +115,48 @@ namespace HydraMenu.ui.sections
 			}
 			GUILayout.EndHorizontal();
 
-			// AmongUsClient::CoStartGameHost has code for spawning in The Skeld, Mira, or Polus maps, but I'm not too sure how to get around replicating its behavior here
+			GUILayout.Label($"Selected map: {(MapNames)selectedMap}");
+			selectedMap = (byte)GUILayout.HorizontalSlider(selectedMap, 0, 5);
+
+			GUILayout.BeginHorizontal();
+			if(GUILayout.Button("Spawn Map"))
+			{
+				AmongUsClient.Instance.StartCoroutine(SpawnMap(selectedMap).WrapToIl2Cpp());
+			}
+
 			if(GUILayout.Button("Despawn Map"))
 			{
 				if(ShipStatus.Instance != null)
 				{
 					ShipStatus.Instance.Despawn();
 					Hydra.notifications.Send("Game Map", "The current map has been despawned.", 5);
-				} else
+				}
+				else
 				{
 					Hydra.notifications.Send("Game Map", "The game map has already been despawned.", 5);
 				}
 			}
+			GUILayout.EndHorizontal();
+
+			GUILayout.Space(5);
 
 			GUILayout.Label("Disco Party:");
 			Hydra.routines.discoHost.Enabled = GUILayout.Toggle(Hydra.routines.discoHost.Enabled, "Enabled");
 			GUILayout.Label($"Color randomization delay: {Hydra.routines.discoHost.randomizationDelay:F2}s");
 			Hydra.routines.discoHost.randomizationDelay = GUILayout.HorizontalSlider(Hydra.routines.discoHost.randomizationDelay, 0.1f, 2.0f);
+		}
+
+		private static IEnumerator SpawnMap(byte mapId)
+		{
+			Hydra.Log.LogInfo($"Attempting to spawn in map id {mapId}");
+
+			AsyncOperationHandle<GameObject> asyncHandle = AmongUsClient.Instance.ShipPrefabs[mapId].InstantiateAsync(null, false);
+			yield return asyncHandle;
+
+			ShipStatus ship = asyncHandle.Result.GetComponent<ShipStatus>();
+			AmongUsClient.Instance.Spawn(ship, -2, SpawnFlags.None);
+
+			Hydra.notifications.Send("Map Spawner", $"{(MapNames)mapId} has been spawned.", 5);
 		}
 	}
 }
