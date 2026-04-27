@@ -28,7 +28,7 @@ namespace HydraMenu.ui.sections
 
 			Host.BanMidGame.Enabled = GUILayout.Toggle(Host.BanMidGame.Enabled, "Be able to ban players mid-game");
 
-			// Host.FlippedSkeld.Enabled = GUILayout.Toggle(Host.FlippedSkeld.Enabled, "Use Flipped Skeld Map");
+			Host.FlippedSkeld = GUILayout.Toggle(Host.FlippedSkeld, "Use Flipped Skeld Map");
 
 			Host.DisableMeetings.Enabled = GUILayout.Toggle(Host.DisableMeetings.Enabled, "Disable Meetings");
 			Host.DisableSabotages.Enabled = GUILayout.Toggle(Host.DisableSabotages.Enabled, "Disable Sabotages");
