@@ -44,7 +44,8 @@ namespace HydraMenu.anticheat
 		public static float NotificationDuration = 10.0f;
 
 		public static Punishments punishment = Punishments.None;
-		public static bool DiscardRPC = true;
+		public static bool sendNotification = true;
+		public static bool discardRpc = true;
 
 		[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
 		class OnPlayerControlRPC
@@ -105,7 +106,7 @@ namespace HydraMenu.anticheat
 
 			rpcCheck.Validate(player, reader, ref blockRpc);
 
-			if(!DiscardRPC || !blockRpc)
+			if(!discardRpc || !blockRpc)
 			{
 				// Put the read position back to its previous spot to not mess up the HandleRpc function
 				reader.Position = oldReadPosition;
@@ -119,7 +120,10 @@ namespace HydraMenu.anticheat
 
 		public static void Flag(PlayerControl player, string reason, bool shouldPunish = true)
 		{
-			Hydra.notifications.Send("Anticheat", reason, NotificationDuration);
+			if(sendNotification)
+			{
+				Hydra.notifications.Send("Anticheat", reason, NotificationDuration);
+			}
 
 			if(AmongUsClient.Instance.AmHost && shouldPunish)
 			{

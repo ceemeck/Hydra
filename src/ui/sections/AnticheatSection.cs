@@ -25,7 +25,8 @@ namespace HydraMenu.ui.sections
 
 			GUILayout.Space(5);
 			GUILayout.Label("When a cheater is detected:");
-			Anticheat.DiscardRPC = GUILayout.Toggle(Anticheat.DiscardRPC, "Discard RPC");
+			Anticheat.sendNotification = GUILayout.Toggle(Anticheat.sendNotification, "Send notification");
+			Anticheat.discardRpc = GUILayout.Toggle(Anticheat.discardRpc, "Discard RPC");
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Label($"Punish the player with: {Anticheat.punishment}");
