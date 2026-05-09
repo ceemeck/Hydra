@@ -44,6 +44,10 @@ namespace HydraMenu.ui
 				style.normal.textColor = Color.white;
 				style.alignment = TextAnchor.MiddleCenter;
 				style.padding.top = 2;
+				// The product of the font size and the UI scale will result in a float value with decimal values
+				// which would get truncuated if we cast this into an int
+				// however this is rather insignificant as the font size would be at most one unit off
+				style.fontSize = (int)(13 * MainUI.scale);
 
 				return style;
 			}
@@ -59,7 +63,7 @@ namespace HydraMenu.ui
 				style.alignment = TextAnchor.MiddleLeft;
 				style.padding.bottom = 1;
 				style.padding.left = 8;
-				style.fontSize = 14;
+				style.fontSize = (int)(MainUI.scale * 14);
 
 				return style;
 			}
@@ -78,7 +82,7 @@ namespace HydraMenu.ui
 				style.alignment = TextAnchor.MiddleLeft;
 				style.padding.bottom = 1;
 				style.padding.left = 13;
-				style.fontSize = 14;
+				style.fontSize = (int)(MainUI.scale * 14);
 
 				return style;
 			}
@@ -93,8 +97,9 @@ namespace HydraMenu.ui
 				style.normal.textColor = ColorValues[UIColors.White];
 				style.alignment = TextAnchor.MiddleLeft;
 				style.clipping = TextClipping.Clip;
-				style.padding.left = 10;
+				style.padding.left = (int)(10 * MainUI.scale);
 				style.richText = true;
+				style.fontSize = (int)(13 * MainUI.scale);
 
 				return style;
 			}
@@ -112,8 +117,9 @@ namespace HydraMenu.ui
 				style.normal.textColor = ColorValues[UIColors.White];
 				style.alignment = TextAnchor.MiddleLeft;
 				style.clipping = TextClipping.Clip;
-				style.padding.left = 10;
+				style.padding.left = (int)(10 * MainUI.scale);
 				style.richText = true;
+				style.fontSize = (int)(13 * MainUI.scale);
 
 				return style;
 			}
