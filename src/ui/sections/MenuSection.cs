@@ -22,7 +22,7 @@ namespace HydraMenu.ui.sections
 			Styles.menuOpacity = (float)Math.Round(GUILayout.HorizontalSlider(Styles.menuOpacity, 0, 1), 4);
 
 			GUILayout.Label($"UI Scale: {MainUI.scale:F2}x");
-			MainUI.scale = (float)Math.Round(GUILayout.HorizontalSlider(MainUI.scale, 1.0f, 1.25f), 2);
+			MainUI.scale = (float)Math.Round(GUILayout.HorizontalSlider(MainUI.scale, 0.5f, 2.00f), 2);
 
 			if(GUILayout.Button("Apply Changes"))
 			{
