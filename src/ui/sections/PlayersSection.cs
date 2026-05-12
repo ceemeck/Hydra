@@ -337,8 +337,7 @@ namespace HydraMenu.ui.sections
 
 			Hydra.Log.LogInfo($"Attempting to report {target.Data.PlayerName}'s body, we are not the host so we have to use the ReportDeadBody RPC");
 
-			bool hasAnticheat = AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame && !Constants.IsVersionModded();
-			if(hasAnticheat)
+			if(Utilities.IsAnticheatPresent())
 			{
 				// It may seem like this check is redundant as there should be no way for a player to be dead inside the lobby
 				// however there are ways that players can use to mark themselves as dead in the lobby
@@ -383,7 +382,7 @@ namespace HydraMenu.ui.sections
 
 		private static IEnumerator AttemptShapeshiftFrame(PlayerControl target)
 		{
-			bool hasAnticheat = AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame && !Constants.IsVersionModded();
+			bool hasAnticheat = Utilities.IsAnticheatPresent();
 
 			if(ShipStatus.Instance == null && hasAnticheat)
 			{
