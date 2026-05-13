@@ -281,9 +281,11 @@ namespace HydraMenu.ui.sections
 
 			if(GUILayout.Button("Super Speed"))
 			{
-				IGameOptions gameOptions = GameOptions.CreateCloneOptions(GameManager.Instance.LogicOptions.currentGameOptions);
 				// The vanilla anticheat prevents us from being able to exceed speeds greater than 3.0f
-				gameOptions.SetFloat(FloatOptionNames.PlayerSpeedMod, 3.0f);
+				float maxSpeed = Utilities.IsAnticheatPresent() ? 3.0f : 5.0f;
+
+				IGameOptions gameOptions = GameOptions.CreateCloneOptions(GameManager.Instance.LogicOptions.currentGameOptions);
+				gameOptions.SetFloat(FloatOptionNames.PlayerSpeedMod, maxSpeed);
 
 				GameOptions.SendGameOptionsToClient(gameOptions, target.OwnerId);
 			}
