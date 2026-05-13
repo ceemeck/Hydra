@@ -12,8 +12,14 @@ namespace HydraMenu.anticheat.rpc
 			// On modded lobbies, it is common for players to have custom names
 			if(Constants.IsVersionModded()) return;
 
-			reader.ReadUInt32();
+			uint netId = reader.ReadUInt32();
 			string requestedName = reader.ReadString();
+
+			if(netId != GetExpectedNetId(player))
+			{
+				blockRpc = true;
+				Anticheat.Flag(player, $"SetName RPC sent for {requestedName} includes an invalid net id, received {netId}, expected {GetExpectedNetId(player)}.");
+			}
 
 			if(requestedName.Length > MAX_NAME_LENGTH)
 			{
@@ -26,6 +32,14 @@ namespace HydraMenu.anticheat.rpc
 				blockRpc = true;
 				Anticheat.Flag(player, $"{requestedName} requested a name with invalid characters.");
 			}
+		}
+
+		private uint GetExpectedNetId(PlayerControl player)
+		{
+			// In host authority, the host sends the SetName RPC with the net id of the player's NetworkedPlayerInfo net object
+			// In server authority, the server sends the SetName RPC with the net id of the player's PlayerControl net object
+			// I don't know why this discrepancy exists, or why the setname RPC even includes the net id field
+			return Utilities.IsAnticheatPresent() ? player.NetId : player.Data.NetId;
 		}
 
 		public override RpcCalls GetRpcCall()
