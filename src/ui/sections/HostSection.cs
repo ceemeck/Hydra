@@ -78,7 +78,30 @@ namespace HydraMenu.ui.sections
 			GUILayout.EndHorizontal();
 
 			GUILayout.Space(5);
-			GUILayout.Label("Map Spawner/Despawner:");
+			GUILayout.Label("Map Spawner:");
+
+			GUILayout.Label($"Selected map: {(MapNames)selectedMap}");
+			selectedMap = (byte)GUILayout.HorizontalSlider(selectedMap, 0, 5);
+
+			GUILayout.BeginHorizontal();
+			if(GUILayout.Button("Despawn Map"))
+			{
+				if(ShipStatus.Instance != null)
+				{
+					ShipStatus.Instance.Despawn();
+					Hydra.notifications.Send("Game Map", "The current map has been despawned.", 5);
+				}
+				else
+				{
+					Hydra.notifications.Send("Game Map", "The game map has already been despawned.", 5);
+				}
+			}
+
+			if(GUILayout.Button("Spawn Map"))
+			{
+				AmongUsClient.Instance.StartCoroutine(SpawnMap(selectedMap).WrapToIl2Cpp());
+			}
+			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
 			if(GUILayout.Button("Despawn Lobby"))
@@ -101,29 +124,6 @@ namespace HydraMenu.ui.sections
 				AmongUsClient.Instance.Spawn(LobbyBehaviour.Instance, -2, SpawnFlags.None);
 
 				Hydra.notifications.Send("Lobby Map", "A new instance of the lobby map has been spawned", 5);
-			}
-			GUILayout.EndHorizontal();
-
-			GUILayout.Label($"Selected map: {(MapNames)selectedMap}");
-			selectedMap = (byte)GUILayout.HorizontalSlider(selectedMap, 0, 5);
-
-			GUILayout.BeginHorizontal();
-			if(GUILayout.Button("Despawn Map"))
-			{
-				if(ShipStatus.Instance != null)
-				{
-					ShipStatus.Instance.Despawn();
-					Hydra.notifications.Send("Game Map", "The current map has been despawned.", 5);
-				}
-				else
-				{
-					Hydra.notifications.Send("Game Map", "The game map has already been despawned.", 5);
-				}
-			}
-
-			if(GUILayout.Button("Spawn Map"))
-			{
-				AmongUsClient.Instance.StartCoroutine(SpawnMap(selectedMap).WrapToIl2Cpp());
 			}
 			GUILayout.EndHorizontal();
 
