@@ -88,7 +88,7 @@ namespace HydraMenu.anticheat
 			RpcHandlers.TryGetValue(rpc, out RpcCheck rpcCheck);
 			if(!Enabled || rpcCheck == null || !rpcCheck.Enabled) return true;
 
-			if(rpcCheck.GetExpectedNetObject() != sourceNetObj)
+			if(sourceNetObj != rpcCheck.GetExpectedNetObject())
 			{
 				// Recieved a RPC that should've been sent for a different net object, some sort of exploit attempt?
 				return false;
@@ -105,17 +105,11 @@ namespace HydraMenu.anticheat
 			bool blockRpc = false;
 
 			rpcCheck.Validate(player, reader, ref blockRpc);
+			if(discardRpc && blockRpc) return false;
 
-			if(!discardRpc || !blockRpc)
-			{
-				// Put the read position back to its previous spot to not mess up the HandleRpc function
-				reader.Position = oldReadPosition;
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			// Put the read position back to its previous spot to not mess up the HandleRpc function
+			reader.Position = oldReadPosition;
+			return true;
 		}
 
 		public static void Flag(PlayerControl player, string reason, bool shouldPunish = true)
