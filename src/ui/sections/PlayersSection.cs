@@ -1,9 +1,7 @@
 ﻿using AmongUs.Data;
 using AmongUs.GameOptions;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
 using InnerNet;
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace HydraMenu.ui.sections
@@ -216,7 +214,7 @@ namespace HydraMenu.ui.sections
 
 			if(GUILayout.Button("Frame Shapeshift"))
 			{
-				target.StartCoroutine(AttemptShapeshiftFrame(target).WrapToIl2Cpp());
+				AttemptShapeshiftFrame(target);
 			}
 
 			GUILayout.BeginHorizontal();
@@ -419,37 +417,38 @@ namespace HydraMenu.ui.sections
 			PlayerControl.LocalPlayer.CmdReportDeadBody(target.Data);
 		}
 
-		private static IEnumerator AttemptShapeshiftFrame(PlayerControl target)
+		private static void AttemptShapeshiftFrame(PlayerControl target)
 		{
 			bool hasAnticheat = Utilities.IsAnticheatPresent();
 
-			if(ShipStatus.Instance == null && hasAnticheat)
+			if(hasAnticheat && ShipStatus.Instance == null)
 			{
 				Hydra.notifications.Send("Framer", "The game must have started for this option to work.");
-				yield break;
+				return;
 			}
 
+			Network.BatchedMessage batch = new Network.BatchedMessage();
 			PlayerControl randomPl = Utilities.GetRandomPlayer(false, false, false, false);
 
 			// The vanilla anticheat will ban the host if they attempt to send the Shapeshift RPC for a player whose role is not Shapeshifter
 			// To get around this, we temporarily change the player's role to Shapeshifter, make them shapeshift, and revert them back to their previous role
-			if(target.Data.RoleType != RoleTypes.Shapeshifter && hasAnticheat)
+			if(hasAnticheat && target.Data.RoleType != RoleTypes.Shapeshifter)
 			{
 				RoleTypes currentRole = target.Data.RoleType;
 
 				// The client that we're attempting to frame shouldn't notice anything as during role selection the SetRole RPC is sent with the canOverrideRole option set to false
-				// meaning any future SetRole RPCs will be ignored (unless the new role is a ghost role)
+				// meaning any future SetRole RPCs will be ignored unless the new role is a ghost role
 				// Just in case this ever gets changed in the future, we could broadcast the SetRole RPC to a junk client ID instead of everyone to avoid the client knowing they became a Shapeshifter
-				target.RpcSetRole(RoleTypes.Shapeshifter, true);
-				// Wait 500ms to make sure the server received the role update request
-				yield return Effects.Wait(0.5f);
-				target.RpcShapeshift(randomPl, true);
-				target.RpcSetRole(currentRole, true);
+				batch.QueueSetRole(target, RoleTypes.Shapeshifter, true);
+				batch.QueueShapeshift(target, randomPl, true);
+				batch.QueueSetRole(target, currentRole, true);
 			}
 			else
 			{
-				target.RpcShapeshift(randomPl, true);
+				batch.QueueShapeshift(target, randomPl, true);
 			}
+
+			batch.FinishBatch();
 		}
 	}
 }
