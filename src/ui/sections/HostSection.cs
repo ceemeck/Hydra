@@ -192,7 +192,7 @@ namespace HydraMenu.ui.sections
 		{
 			if(Utilities.IsAnticheatPresent() && !AmongUsClient.Instance.AmHost)
 			{
-				Hydra.notifications.Send("Framer", "You need to be the host of the lobby in order to use this feature.");
+				Hydra.notifications.Send("Shapeshift Player", "You need to be the host of the lobby in order to use this feature.");
 				yield break;
 			}
 
@@ -200,7 +200,7 @@ namespace HydraMenu.ui.sections
 			{
 				if(player == target || player.shapeshiftTargetPlayerId == target.PlayerId) continue;
 
-				PlayersSection.ShapeshiftPlayer(player, target);
+				Utilities.ShapeshiftPlayer(player, player);
 
 				// This function can send up to 15 reliable messages at once, so we need to implement a delay to avoid kicks
 				yield return Effects.Wait(0.05f);
@@ -211,7 +211,7 @@ namespace HydraMenu.ui.sections
 		{
 			if(Utilities.IsAnticheatPresent() && !AmongUsClient.Instance.AmHost)
 			{
-				Hydra.notifications.Send("Framer", "You need to be the host of the lobby in order to use this feature.");
+				Hydra.notifications.Send("Shapeshift Player", "You need to be the host of the lobby in order to use this feature.");
 				yield break;
 			}
 
@@ -219,7 +219,7 @@ namespace HydraMenu.ui.sections
 			{
 				if(player.shapeshiftTargetPlayerId == -1) continue;
 
-				PlayersSection.ShapeshiftPlayer(player, player);
+				Utilities.ShapeshiftPlayer(player, player);
 
 				yield return Effects.Wait(0.05f);
 			}

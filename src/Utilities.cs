@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AmongUs.GameOptions;
+using System.Collections.Generic;
 
 namespace HydraMenu
 {
@@ -85,6 +86,45 @@ namespace HydraMenu
 			MeetingRoomManager.Instance.AssignSelf(reporter, target);
 			reporter.RpcStartMeeting(target);
 			HudManager.Instance.OpenMeetingRoom(reporter);
+		}
+
+		public static void ShapeshiftPlayer(PlayerControl victim, PlayerControl target)
+		{
+			bool hasAnticheat = IsAnticheatPresent();
+
+			if(hasAnticheat && !AmongUsClient.Instance.AmHost)
+			{
+				Hydra.notifications.Send("Shapeshift Player", "You must be the host of the lobby in order to use this feature.");
+				return;
+			}
+
+			if(hasAnticheat && ShipStatus.Instance == null)
+			{
+				Hydra.notifications.Send("Shapeshift Player", "The game must have started for this option to work.");
+				return;
+			}
+
+			Network.BatchedMessage batch = new Network.BatchedMessage();
+
+			// The vanilla anticheat will ban the host if they attempt to send the Shapeshift RPC for a player whose role is not Shapeshifter
+			// To get around this, we temporarily change the player's role to Shapeshifter, make them shapeshift, and revert them back to their previous role
+			if(hasAnticheat && victim.Data.RoleType != RoleTypes.Shapeshifter)
+			{
+				RoleTypes currentRole = victim.Data.RoleType;
+
+				// The client that we're attempting to frame shouldn't notice anything as during role selection the SetRole RPC is sent with the canOverrideRole option set to false
+				// meaning any future SetRole RPCs will be ignored unless the new role is a ghost role
+				// Just in case this ever gets changed in the future, we could broadcast the SetRole RPC to a junk client ID instead of everyone to avoid the client knowing they became a Shapeshifter
+				batch.QueueSetRole(victim, RoleTypes.Shapeshifter, true);
+				batch.QueueShapeshift(victim, target, true);
+				batch.QueueSetRole(victim, currentRole, true);
+			}
+			else
+			{
+				batch.QueueShapeshift(victim, target, true);
+			}
+
+			batch.FinishBatch();
 		}
 
 		public static MapNames GetCurrentMap()
