@@ -35,5 +35,25 @@ namespace HydraMenu.ui
 
 			return RolesList[newValue];
 		}
+
+		public static PlayerControl PlayerSpecificToggle(string label, PlayerControl selectedPlayer, PlayerControl currentPlayer)
+		{
+			GUIStyle toggle = new GUIStyle(GUI.skin.toggle);
+			bool isCurrentSelection = selectedPlayer == currentPlayer;
+
+			if(isCurrentSelection)
+			{
+				toggle.normal = toggle.onNormal;
+				toggle.active = toggle.onActive;
+				toggle.hover = toggle.onHover;
+			}
+
+			// The GUILayout::Toggle function always returns the current state of the toggle
+			// It is possible to determine when the toggle is changed, however it requires messy hacks involving getters and setters
+			// Using a GUILayout.Button disguised as a toggle that triggers only when the button is pressed is more pratical here
+			if(!GUILayout.Button(label, toggle)) return currentPlayer;
+
+			return isCurrentSelection ? null : selectedPlayer;
+		}
 	}
 }

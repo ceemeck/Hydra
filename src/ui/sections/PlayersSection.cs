@@ -124,7 +124,7 @@ namespace HydraMenu.ui.sections
 
 				GUILayout.Label(
 					// If we want to get a player's name, we have to use NetworkedPlayerInfo::PlayerName instead of PlayerControl::name to avoid
-					// getting the incorrect name if the player is currently shapeshifted to another player
+					// getting the incorrect name if the player is shapeshifted to another player
 					$"Name: {target.Data.PlayerName} {target.Data.ColorName}" +
 					$"\nRole: {target.Data.RoleType}" +
 					$"\nState: " + (target.Data.IsDead ? "Dead" : "Alive") +
@@ -134,7 +134,8 @@ namespace HydraMenu.ui.sections
 					$"\nDevice: {platform.Platform}" +
 					(target.OwnerId == AmongUsClient.Instance.HostId ? "\nHost: true" : "")
 				);
-			} else
+			}
+			else
 			{
 				GUILayout.Label(
 					$"Name: {target.Data.PlayerName} {target.Data.ColorName}" +
@@ -144,7 +145,7 @@ namespace HydraMenu.ui.sections
 				);
 			}
 
-			Hydra.routines.playerFollower.Enabled = GUILayout.Toggle(Hydra.routines.playerFollower.Enabled, "Follow");
+			Hydra.routines.playerFollower.following = Controls.PlayerSpecificToggle("Follow", target, Hydra.routines.playerFollower.following);
 
 			if(GUILayout.Button("Teleport"))
 			{

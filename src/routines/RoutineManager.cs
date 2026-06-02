@@ -22,7 +22,7 @@ namespace HydraMenu.routines
 		{
 			foreach(IRoutine routine in routineList)
 			{
-				if(!routine._enabled) continue;
+				if(!routine.Enabled) continue;
 
 				routine.Run();
 			}
@@ -37,7 +37,7 @@ namespace HydraMenu.routines
 
 				foreach(IRoutine routine in Hydra.routines.routineList)
 				{
-					if(!routine._enabled) continue;
+					if(!routine.Enabled) continue;
 
 					routine.OnDisconnect();
 				}
