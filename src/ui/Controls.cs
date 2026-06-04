@@ -27,6 +27,7 @@ namespace HydraMenu.ui
 			RoleTypes.ImpostorGhost
 		};
 
+
 		public static RoleTypes HorizontalRoleSlider(RoleTypes currentRole)
 		{
 			int currentValue = RolesList.IndexOf(currentRole);
@@ -54,6 +55,12 @@ namespace HydraMenu.ui
 			if(!GUILayout.Button(label, toggle)) return currentPlayer;
 
 			return isCurrentSelection ? null : selectedPlayer;
+		}
+
+		public static void DrawCrewmateColorBox(Rect rect, NetworkedPlayerInfo player)
+		{
+			string colorName = Utilities.GetPlayerColor(player);
+			GUI.Box(rect, "", Styles.CreateCrewmateColorBox(colorName, colorName != "Fortegreen" ? player.Color : Color.black));
 		}
 	}
 }

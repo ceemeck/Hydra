@@ -17,8 +17,7 @@ namespace HydraMenu.features
 
 				if(!resultFlags.HasFlag(MurderResultFlags.Succeeded)) return;
 
-				// NetworkedPlayerInfo::ColorName automatically appends parentheses at the start and end of the color's name, so we don't need to add them ourselves in the notification
-				Hydra.notifications.Send("Auto Report Bodies", $"{target.Data.PlayerName} was just killed by {__instance.Data.PlayerName} {__instance.Data.ColorName}, their body has been automatically reported.");
+				Hydra.notifications.Send("Auto Report Bodies", $"{target.Data.PlayerName} was just killed by {__instance.Data.PlayerName} ({Utilities.GetPlayerColor(__instance.Data)}), their body has been automatically reported.");
 				PlayerControl.LocalPlayer.CmdReportDeadBody(target.Data);
 			}
 		}

@@ -147,5 +147,17 @@ namespace HydraMenu
 			// which does not require us to use any sort of bypasses
 			return PlayerControl.LocalPlayer.Data.OwnerId == -4;
 		}
+
+		public static string GetPlayerColor(NetworkedPlayerInfo player)
+		{
+			int colorId = player.DefaultOutfit.ColorId;
+
+			if(colorId < 0 || colorId >= Palette.ColorNames.Length)
+			{
+				return "Fortegreen";
+			}
+
+			return player.GetPlayerColorString();
+		}
 	}
 }

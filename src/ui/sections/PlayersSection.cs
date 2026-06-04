@@ -96,7 +96,7 @@ namespace HydraMenu.ui.sections
 			}
 
 			Rect playerColor = new Rect(0, position * PlayerButtonSize.y, PlayerColorBoxSize.x, PlayerColorBoxSize.y);
-			GUI.Box(playerColor, "", Styles.CreateCrewmateColorBox(player.Data.ColorName, player.Data.Color));
+			Controls.DrawCrewmateColorBox(playerColor, player.Data);
 		}
 
 		private string GetRoleColor(RoleTypes role)
@@ -122,7 +122,7 @@ namespace HydraMenu.ui.sections
 				GUILayout.Label(
 					// If we want to get a player's name, we have to use NetworkedPlayerInfo::PlayerName instead of PlayerControl::name to avoid
 					// getting the incorrect name if the player is shapeshifted to another player
-					$"Name: {target.Data.PlayerName} {target.Data.ColorName}" +
+					$"Name: {target.Data.PlayerName} ({Utilities.GetPlayerColor(target.Data)})" +
 					$"\nRole: {target.Data.RoleType}" +
 					$"\nState: " + (target.Data.IsDead ? "Dead" : "Alive") +
 					$"\nFriendcode: " + (streamerMode ? "REDACTED" : target.Data.FriendCode) +
@@ -135,7 +135,7 @@ namespace HydraMenu.ui.sections
 			else
 			{
 				GUILayout.Label(
-					$"Name: {target.Data.PlayerName} {target.Data.ColorName}" +
+					$"Name: {target.Data.PlayerName} ({Utilities.GetPlayerColor(target.Data)})" +
 					$"\nRole: {target.Data.RoleType}" +
 					$"\nState: " + (target.Data.IsDead ? "Dead" : "Alive") +
 					$"\nIs Dummy: true"
