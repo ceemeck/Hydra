@@ -126,6 +126,7 @@ namespace HydraMenu.features
 				if(!Enabled || !AmongUsClient.Instance.AmHost) return;
 
 				PlayerControl player = Utilities.GetRandomPlayer();
+				if(player == null) return;
 
 				// Shapeshifting and reverting shapeshifts have strict ratelimits for the host, which can impact the Mass Shapeshift feature in Host options
 				// We can bypass these ratelimits by sending a game options update and setting the shapeshift cooldown to zero seconds
