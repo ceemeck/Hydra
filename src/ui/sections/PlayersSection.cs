@@ -169,7 +169,12 @@ namespace HydraMenu.ui.sections
 			GUILayout.Space(5);
 			GUILayout.Label("Host Only Features:" + (AmongUsClient.Instance.AmHost ? "" : "\n(Using these will get you kicked!)"));
 
-			Controls.PlayerSpecificToggle("Place in Jail", target, ref Hydra.routines.jailPlayer.target);
+			if(Controls.PlayerSpecificToggle("Place in Jail", target, ref Hydra.routines.jailPlayer.target))
+			{
+				// This function is called when the toggle is disabled aswell, but that does not make any impact
+				Hydra.routines.jailPlayer.OnEnable();
+			}
+
 			Controls.PlayerSpecificToggle("Auto Report Bodies As", target, ref Troll.AutoReportBodies.source);
 
 			if(GUILayout.Button("Force Meeting As"))

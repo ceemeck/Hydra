@@ -101,7 +101,7 @@ namespace HydraMenu.routines
 
 		public override void OnEnable()
 		{
-			if(PlayerControl.LocalPlayer == null)
+			if(PlayerControl.LocalPlayer == null || ShipStatus.Instance == null)
 			{
 				Hydra.notifications.Send("Jail Player", "Jail Player can only be used inside of a game.", 10);
 				Enabled = false;
