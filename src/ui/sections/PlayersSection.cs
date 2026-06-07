@@ -143,7 +143,7 @@ namespace HydraMenu.ui.sections
 				);
 			}
 
-			Hydra.routines.playerFollower.following = Controls.PlayerSpecificToggle("Follow", target, Hydra.routines.playerFollower.following);
+			Controls.PlayerSpecificToggle("Follow", target, ref Hydra.routines.playerFollower.following);
 
 			if(GUILayout.Button("Teleport"))
 			{
@@ -169,8 +169,8 @@ namespace HydraMenu.ui.sections
 			GUILayout.Space(5);
 			GUILayout.Label("Host Only Features:" + (AmongUsClient.Instance.AmHost ? "" : "\n(Using these will get you kicked!)"));
 
-			Hydra.routines.jailPlayer.target = Controls.PlayerSpecificToggle("Place in Jail", target, Hydra.routines.jailPlayer.target);
-			Troll.AutoReportBodies.source = Controls.PlayerSpecificToggle("Auto Report Bodies As", target, Troll.AutoReportBodies.source);
+			Controls.PlayerSpecificToggle("Place in Jail", target, ref Hydra.routines.jailPlayer.target);
+			Controls.PlayerSpecificToggle("Auto Report Bodies As", target, ref Troll.AutoReportBodies.source);
 
 			if(GUILayout.Button("Force Meeting As"))
 			{
