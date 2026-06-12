@@ -78,7 +78,7 @@ namespace HydraMenu.ui.sections
 		{
 			if(PlayerControl.LocalPlayer == null)
 			{
-				Hydra.notifications.Send("Sabotage", "This option can only be used in a game.");
+				Hydra.notifications.Send("Sabotage", "This option can only be used inside of a game.");
 				return;
 			}
 
@@ -98,7 +98,7 @@ namespace HydraMenu.ui.sections
 			else if(currentEvent.button == 1)
 			{
 				Sabotage.FixSabotage(system);
-				Hydra.notifications.Send("Sabotage", $"{system} has been fixed,", 5);
+				Hydra.notifications.Send("Sabotage", $"{system} has been fixed.", 5);
 			}
 		}
 
@@ -106,7 +106,7 @@ namespace HydraMenu.ui.sections
 		{
 			if(PlayerControl.LocalPlayer == null)
 			{
-				Hydra.notifications.Send("Sabotage", "This option can only be used in a game.");
+				Hydra.notifications.Send("Sabotage", "This option can only be used inside of a game.");
 				return;
 			}
 

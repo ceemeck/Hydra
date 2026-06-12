@@ -79,18 +79,18 @@ namespace HydraMenu.ui.sections
 			GUILayout.BeginHorizontal();
 			if(GUILayout.Button("Clear Asteroids"))
 			{
-				Network.SendPlayAnimation((byte)TaskTypes.ClearAsteroids);
+				PlayAnimation(TaskTypes.ClearAsteroids);
 			}
 
 			if(GUILayout.Button("Empty Garbage"))
 			{
-				Network.SendPlayAnimation((byte)TaskTypes.EmptyGarbage);
+				PlayAnimation(TaskTypes.EmptyGarbage);
 			}
 			GUILayout.EndHorizontal();
 
 			if(GUILayout.Button("Prime Shields"))
 			{
-				Network.SendPlayAnimation((byte)TaskTypes.PrimeShields);
+				PlayAnimation(TaskTypes.PrimeShields);
 			}
 
 			GUILayout.Space(5);
@@ -126,6 +126,23 @@ namespace HydraMenu.ui.sections
 			}
 
 			Hydra.notifications.Send("Task Finisher", "All your tasks have been finished.", 5);
+		}
+
+		public void PlayAnimation(TaskTypes task)
+		{
+			if(PlayerControl.LocalPlayer == null)
+			{
+				Hydra.notifications.Send("Play Animation", "This option can only be used inside of a game.");
+				return;
+			}
+
+			if(ShipStatus.Instance == null)
+			{
+				Hydra.notifications.Send("Play Animation", "There must be an instance of ShipStatus for this feature to work.");
+				return;
+			}
+
+			Network.SendPlayAnimation((byte)task);
 		}
 	}
 }
