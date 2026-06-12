@@ -1,6 +1,8 @@
 ﻿using BepInEx.Unity.IL2CPP.Utils.Collections;
+using HydraMenu.assets;
 using HydraMenu.features;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HydraMenu.ui.sections
@@ -76,22 +78,8 @@ namespace HydraMenu.ui.sections
 			}
 			GUILayout.EndHorizontal();
 
-			GUILayout.BeginHorizontal();
-			if(GUILayout.Button("Clear Asteroids"))
-			{
-				PlayAnimation(TaskTypes.ClearAsteroids);
-			}
-
-			if(GUILayout.Button("Empty Garbage"))
-			{
-				PlayAnimation(TaskTypes.EmptyGarbage);
-			}
-			GUILayout.EndHorizontal();
-
-			if(GUILayout.Button("Prime Shields"))
-			{
-				PlayAnimation(TaskTypes.PrimeShields);
-			}
+			Dictionary<string, TaskTypes> animations = MapAssets.GetAnimations();
+			Controls.DrawButtonCell(animations, PlayAnimation, 2);
 
 			GUILayout.Space(5);
 			GUILayout.Label($"Update level to: {level + 1}");
