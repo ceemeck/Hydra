@@ -331,7 +331,7 @@ namespace HydraMenu.ui.sections
 		{
 			bool hasAnticheat = Utilities.IsAnticheatPresent();
 
-			if(hasAnticheat && ShipStatus.Instance == null)
+			if(hasAnticheat && AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
 			{
 				Hydra.notifications.Send("Murder Player", $"You can only kill players once the game has started.");
 				return;
@@ -386,9 +386,7 @@ namespace HydraMenu.ui.sections
 
 			if(Utilities.IsAnticheatPresent())
 			{
-				// It may seem like this check is redundant as there should be no way for a player to be dead inside the lobby
-				// however there are ways that players can use to mark themselves as dead in the lobby
-				if(LobbyBehaviour.Instance != null)
+				if(AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
 				{
 					Hydra.notifications.Send("Report Body", "The game must have started for this option to work.");
 					return;
@@ -438,7 +436,7 @@ namespace HydraMenu.ui.sections
 				yield break;
 			}
 
-			if(hasAnticheat && ShipStatus.Instance == null)
+			if(hasAnticheat && AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
 			{
 				Hydra.notifications.Send("Framer", "The game must have started for this option for this option to work.");
 				yield break;

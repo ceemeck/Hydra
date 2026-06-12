@@ -143,7 +143,7 @@ namespace HydraMenu.anticheat
 					Hydra.Log.LogMessage($"{player.Data.PlayerName} was kicked by Hydra Anticheat for hacking");
 
 					// The vanilla anticheat prevents using the ErrorKick method if the game has not started yet
-					if(punishment == Punishments.Kick || LobbyBehaviour.Instance != null)
+					if(punishment == Punishments.Kick || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
 					{
 						AmongUsClient.Instance.KickPlayer(player.OwnerId, false);
 					}

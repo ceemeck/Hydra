@@ -100,7 +100,7 @@ namespace HydraMenu
 				return;
 			}
 
-			if(hasAnticheat && ShipStatus.Instance == null)
+			if(hasAnticheat && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
 			{
 				Hydra.notifications.Send("Shapeshift Player", "The game must have started for this option to work.");
 				return;
