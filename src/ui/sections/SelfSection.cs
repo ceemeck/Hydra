@@ -50,7 +50,6 @@ namespace HydraMenu.ui.sections
 					Hydra.notifications.Send("Player Randomizer", "Your avatar has been randomized for this game.", 5);
 				} else
 				{
-					AccountManager.Instance.RandomizeName();
 					Utilities.RandomizePlayer();
 
 					Hydra.notifications.Send("Player Randomizer", "Your name and avatar has been randomized.", 5);

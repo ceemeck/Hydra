@@ -114,7 +114,7 @@ namespace HydraMenu
 
 			Hydra.Log.LogInfo("We are not the host so we have to use the ReportDeadBody RPC");
 
-			if(reporter != PlayerControl.LocalPlayer)
+			if(hasAnticheat && reporter != PlayerControl.LocalPlayer)
 			{
 				Hydra.notifications.Send("Start Meeting", "You must be the host of the lobby to make another player start a meeting.");
 				return;
@@ -141,7 +141,7 @@ namespace HydraMenu
 				}
 			}
 
-			PlayerControl.LocalPlayer.CmdReportDeadBody(target);
+			reporter.CmdReportDeadBody(target);
 		}
 
 		public static void OpenMeeting(PlayerControl reporter, NetworkedPlayerInfo target)

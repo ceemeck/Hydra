@@ -19,7 +19,8 @@ namespace HydraMenu.ui.sections
 			if(PlayerControl.LocalPlayer == null)
 			{
 				GUILayout.Label("You are not currently in a game, these options will not work.");
-			} else if(!AmongUsClient.Instance.AmHost)
+			}
+			else if(!AmongUsClient.Instance.AmHost)
 			{
 				GUILayout.Label("You are not the host of the current lobby. Using these options will either do nothing or get you banned by the anticheat");
 			}
@@ -199,7 +200,7 @@ namespace HydraMenu.ui.sections
 
 				Utilities.ShapeshiftPlayer(player, target);
 
-				// This function can send up to 15 reliable messages at once, so we need to implement a delay to avoid kicks
+				// This function can send up to 42 reliable messages at once, so we need to implement a delay to avoid getting disconnected
 				yield return Effects.Wait(0.05f);
 			}
 		}
