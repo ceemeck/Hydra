@@ -242,7 +242,7 @@ namespace HydraMenu.ui.sections
 			Self.CustomChat.size = (byte)GUILayout.HorizontalSlider(Self.CustomChat.size, 0, 10);
 
 			GUILayout.Label($"Color: {Self.CustomChat.colors[Self.CustomChat.colorIndex]}");
-			Self.CustomChat.colorIndex = (byte)GUILayout.HorizontalSlider(Self.CustomChat.colorIndex, 0, Self.CustomChat.colors.Count);
+			Self.CustomChat.colorIndex = (byte)GUILayout.HorizontalSlider(Self.CustomChat.colorIndex, 0, Self.CustomChat.colors.Count - 1);
 
 			// Automatically close and open all doors at a set interval
 			GUILayout.Label("Door Troller:");
@@ -479,21 +479,6 @@ namespace HydraMenu.ui.sections
 			Network.BatchedMessage batch = new Network.BatchedMessage(AmongUsClient.Instance.HostId);
 			batch.UseAnticheatBypass();
 			batch.QueueSceneChange(AmongUsClient.Instance.HostId, scene);
-			batch.FinishBatch();
-		}
-
-		private static void CrazyTasks(PlayerControl player)
-		{
-			byte[] tasks = new byte[255];
-
-			for(byte i = 0; i < 255; i++)
-			{
-				tasks[i] = i;
-			}
-
-			Network.BatchedMessage batch = new Network.BatchedMessage();
-			batch.UseAnticheatBypass();
-			batch.QueueSetTasks(player.Data, tasks);
 			batch.FinishBatch();
 		}
 

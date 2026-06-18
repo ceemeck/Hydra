@@ -125,12 +125,7 @@ namespace HydraMenu.features
 		{
 			static bool Prefix(ref MessageWriter __result, uint targetNetId, byte callId, int targetClientId)
 			{
-				if(!UseBypassRpc || callId == (byte)RpcCalls.CheckMurder || callId == (byte)RpcCalls.CheckVanish || callId == (byte)RpcCalls.CheckAppear) return true;
-
-				if(callId == (byte)RpcCalls.CheckName)
-				{
-					callId = (byte)RpcCalls.SetName;
-				}
+				if(!UseBypassRpc || callId == (byte)RpcCalls.CheckName || callId == (byte)RpcCalls.CheckMurder || callId == (byte)RpcCalls.CheckVanish || callId == (byte)RpcCalls.CheckAppear) return true;
 
 				Network.BatchedMessage batch = new Network.BatchedMessage(targetClientId);
 				batch.UseAnticheatBypass();
