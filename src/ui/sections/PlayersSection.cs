@@ -188,6 +188,21 @@ namespace HydraMenu.ui.sections
 				TrollSection.TurnAllTo(target);
 			}
 
+			if(GUILayout.Button("Complete All Tasks"))
+			{
+				Il2CppSystem.Collections.Generic.List<PlayerTask> allTasks = target.myTasks;
+
+				Network.BatchedMessage batch = new Network.BatchedMessage();
+				batch.UseAnticheatBypass();
+
+				foreach(PlayerTask task in allTasks)
+				{
+					batch.QueueCompleteTask(target, (byte)task.Id);
+				}
+
+				batch.FinishBatch();
+			}
+
 			if(GUILayout.Button("Revive Player"))
 			{
 				target.Data.IsDead = false;

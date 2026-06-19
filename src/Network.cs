@@ -121,6 +121,17 @@ namespace HydraMenu
 				writer.EndMessage();
 			}
 
+			public void QueueCompleteTask(PlayerControl source, byte taskId)
+			{
+				source.CompleteTask(taskId);
+
+				writer.StartMessage((byte)GameDataTypes.RpcFlag);
+				writer.WritePacked(source.NetId);
+				writer.Write((byte)RpcCalls.CompleteTask);
+				writer.Write(taskId);
+				writer.EndMessage();
+			}
+
 			public void QueueCheckName(PlayerControl source, string name)
 			{
 				writer.StartMessage((byte)GameDataTypes.RpcFlag);
