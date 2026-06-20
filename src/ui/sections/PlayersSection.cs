@@ -147,25 +147,10 @@ namespace HydraMenu.ui.sections
 
 			Hydra.routines.playerFollower.Enabled = Controls.PlayerSpecificToggle("Follow", target, ref Hydra.routines.playerFollower.following);
 
-			GUILayout.BeginHorizontal();
 			if(GUILayout.Button("Teleport"))
 			{
 				// We do not want to use PlayerControl::GetTruePosition() here as it would teleport us to the player's feet
 				Teleporter.TeleportTo(target.transform.position);
-			}
-
-			if(GUILayout.Button("Teleport To Me"))
-			{
-				Network.BatchedMessage batch = new Network.BatchedMessage();
-				batch.UseAnticheatBypass();
-				batch.QueueSnapTo(target, (ushort)(target.NetTransform.lastSequenceId + 2), PlayerControl.LocalPlayer.transform.position);
-				batch.FinishBatch();
-			}
-			GUILayout.EndHorizontal();
-
-			if(GUILayout.Button("TP Everyone To"))
-			{
-				TrollSection.TPTo(target);
 			}
 
 			if(GUILayout.Button("Murder"))
@@ -182,57 +167,6 @@ namespace HydraMenu.ui.sections
 			{
 				Utilities.AttemptStartMeeting(PlayerControl.LocalPlayer, target.Data);
 			}
-
-			if(GUILayout.Button("Turn All Into"))
-			{
-				TrollSection.TurnAllTo(target);
-			}
-
-			if(GUILayout.Button("Complete All Tasks"))
-			{
-				Il2CppSystem.Collections.Generic.List<PlayerTask> allTasks = target.myTasks;
-
-				Network.BatchedMessage batch = new Network.BatchedMessage();
-				batch.UseAnticheatBypass();
-
-				foreach(PlayerTask task in allTasks)
-				{
-					batch.QueueCompleteTask(target, (byte)task.Id);
-				}
-
-				batch.FinishBatch();
-			}
-
-			if(GUILayout.Button("Revive Player"))
-			{
-				target.Data.IsDead = false;
-				target.Data.RoleType = RoleTypes.Crewmate;
-
-				Network.BatchedMessage batch = new Network.BatchedMessage();
-				batch.UseAnticheatBypass();
-				batch.QueueDataFlag(target.Data);
-				batch.FinishBatch();
-			}
-
-			GUILayout.BeginHorizontal();
-			if(GUILayout.Button("Kick"))
-			{
-				Network.BatchedMessage batch = new Network.BatchedMessage(AmongUsClient.Instance.HostId);
-				batch.UseAnticheatBypass();
-				batch.QueueAddVote(1, target.OwnerId);
-				batch.QueueAddVote(2, target.OwnerId);
-				batch.QueueAddVote(3, target.OwnerId);
-				batch.FinishBatch();
-			}
-
-			if(GUILayout.Button("Ban"))
-			{
-				Network.BatchedMessage batch = new Network.BatchedMessage(target.OwnerId);
-				batch.UseAnticheatBypass();
-				batch.QueueCheckName(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.PlayerName);
-				batch.FinishBatch();
-			}
-			GUILayout.EndHorizontal();
 
 			GUILayout.Space(5);
 			GUILayout.Label("Host Only Features:" + (AmongUsClient.Instance.AmHost ? "" : "\n(Using these will get you kicked!)"));
@@ -265,14 +199,7 @@ namespace HydraMenu.ui.sections
 					}
 
 					Network.BatchedMessage batch = new Network.BatchedMessage();
-
-					if(Self.UseBypassRpc)
-					{
-						batch.UseAnticheatBypass();
-					}
-
 					batch.QueueVotingComplete(array, target.Data, false);
-
 					batch.FinishBatch();
 				}
 			}
@@ -289,16 +216,9 @@ namespace HydraMenu.ui.sections
 				MeetingHud.VoterState[] votes = Array.Empty<MeetingHud.VoterState>();
 
 				Network.BatchedMessage batch = new Network.BatchedMessage();
-
-				if(Self.UseBypassRpc)
-				{
-					batch.UseAnticheatBypass();
-				}
-
 				batch.QueueVotingComplete(votes, target.Data, false);
 				// If we created a MeetingHud object then it will be destroyed by the RpcClose function
 				batch.QueueCloseMeeting();
-
 				batch.FinishBatch();
 			}
 			GUILayout.EndHorizontal();
@@ -325,7 +245,6 @@ namespace HydraMenu.ui.sections
 				}
 
 				Network.BatchedMessage batch = new Network.BatchedMessage();
-				if(Self.UseBypassRpc) batch.UseAnticheatBypass();
 				batch.QueueSetTasks(target.Data, taskIds);
 				batch.FinishBatch();
 			}
@@ -333,7 +252,6 @@ namespace HydraMenu.ui.sections
 			if(GUILayout.Button("Clear Tasks"))
 			{
 				Network.BatchedMessage batch = new Network.BatchedMessage();
-				if(Self.UseBypassRpc) batch.UseAnticheatBypass();
 				batch.QueueSetTasks(target.Data, Array.Empty<byte>());
 				batch.FinishBatch();
 			}

@@ -52,13 +52,7 @@ namespace HydraMenu
 		public static void SendDataFlag(uint netId, MessageWriter msg, int targetClientId = -1)
 		{
 			BatchedMessage batch = new BatchedMessage(targetClientId);
-			batch.UseAnticheatBypass();
-
-			batch.writer.StartMessage((byte)GameDataTypes.DataFlag);
-			batch.writer.WritePacked(netId);
-			batch.writer.Write(msg, false);
-			batch.writer.EndMessage();
-
+			batch.QueueDataFlag(netId, msg);
 			batch.FinishBatch();
 		}
 

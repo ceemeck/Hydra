@@ -113,8 +113,6 @@ namespace HydraMenu.features
 			}
 		}
 
-		public static bool AlwaysImp { get; set; } = false;
-		public static bool KillBypass { get; set; } = false;
 		public static bool NoKillChecks { get; set; } = false;
 
 		[HarmonyPatch(typeof(RoleBehaviour), nameof(RoleBehaviour.IsValidTarget))]
@@ -152,37 +150,6 @@ namespace HydraMenu.features
 				{
 					return true;
 				}
-			}
-		}
-
-		[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckMurder))]
-		class Killbypass
-		{
-			static bool Prefix(PlayerControl __instance, PlayerControl target)
-			{
-				if(!KillBypass) return true;
-
-				Network.BatchedMessage batch = new Network.BatchedMessage();
-				batch.UseAnticheatBypass();
-				batch.QueueMurderPlayer(__instance, target, MurderResultFlags.Succeeded);
-				batch.FinishBatch();
-				return false;
-			}
-		}
-
-		[HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.SendClientReady))]
-		public static class AlwaysImposter
-		{
-			public static RoleTypes selectedRole = RoleTypes.Viper;
-
-			static void Prefix()
-			{
-				if(!AlwaysImp) return;
-
-				Network.BatchedMessage batch = new Network.BatchedMessage();
-				batch.UseAnticheatBypass();
-				batch.QueueSetRole(PlayerControl.LocalPlayer, selectedRole, false);
-				batch.FinishBatch();
 			}
 		}
 	}

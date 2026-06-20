@@ -19,11 +19,6 @@ namespace HydraMenu.routines
 
 			Network.BatchedMessage batch = new Network.BatchedMessage();
 
-			if(Self.UseBypassRpc)
-			{
-				batch.UseAnticheatBypass();
-			}
-
 			foreach(PlayerControl player in PlayerControl.AllPlayerControls)
 			{
 				batch.QueueSetColor(player, (byte)rnd.Next(0, 18));

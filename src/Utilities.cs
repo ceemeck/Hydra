@@ -91,11 +91,6 @@ namespace HydraMenu
 
 			Network.BatchedMessage batch = new Network.BatchedMessage();
 
-			if(Self.UseBypassRpc)
-			{
-				batch.UseAnticheatBypass();
-			}
-
 			// We cannot change the name of our player in server-authoritative lobbies, even as the host
 			if(!hasAnticheat)
 			{
@@ -174,14 +169,7 @@ namespace HydraMenu
 			}
 
 			Network.BatchedMessage batch = new Network.BatchedMessage();
-
-			if(Self.UseBypassRpc)
-			{
-				batch.UseAnticheatBypass();
-			}
-
 			batch.QueueReportDeadBody(reporter, target);
-
 			batch.FinishBatch();
 		}
 
@@ -226,11 +214,6 @@ namespace HydraMenu
 
 			Network.BatchedMessage batch = new Network.BatchedMessage();
 
-			if(Self.UseBypassRpc)
-			{
-				batch.UseAnticheatBypass();
-			}
-
 			// The vanilla anticheat will ban the host if they attempt to send the Shapeshift RPC for a player whose role is not Shapeshifter
 			// To get around this, we temporarily change the player's role to Shapeshifter, make them shapeshift, and revert them back to their previous role
 			if(hasAnticheat && victim.Data.RoleType != RoleTypes.Shapeshifter)
@@ -266,7 +249,7 @@ namespace HydraMenu
 
 		public static bool IsAnticheatPresent()
 		{
-			if(Constants.IsVersionModded() || PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null || Self.UseBypassRpc) return false;
+			if(Constants.IsVersionModded() || PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null) return false;
 
 			// On freeplay, local, and modded lobbies, NetworkedPlayerInfo net objects are owned by the host (-2)
 			// On vanilla lobbies, NetworkedPlayerInfo net objects are owned by the backend among us servers (-4)

@@ -33,6 +33,7 @@ namespace HydraMenu.ui.sections
 			Host.DisableCloseDoors.Enabled = GUILayout.Toggle(Host.DisableCloseDoors.Enabled, "Disable Close Doors");
 			Host.DisableCameras.Enabled = GUILayout.Toggle(Host.DisableCameras.Enabled, "Disable Security Cameras");
 			Host.DisableGameEnd.Enabled = GUILayout.Toggle(Host.DisableGameEnd.Enabled, "Disable Game End");
+			Host.NoKillCooldown.Enabled = GUILayout.Toggle(Host.NoKillCooldown.Enabled, "No Kill Cooldown");
 
 			GUILayout.BeginHorizontal();
 			Host.BlockLowLevels.Enabled = GUILayout.Toggle(Host.BlockLowLevels.Enabled, $"Kick players with less than {Host.BlockLowLevels.MinLevel} levels");
@@ -143,15 +144,8 @@ namespace HydraMenu.ui.sections
 					MeetingHud.VoterState[] votes = Array.Empty<MeetingHud.VoterState>();
 
 					Network.BatchedMessage batch = new Network.BatchedMessage();
-
-					if(Self.UseBypassRpc)
-					{
-						batch.UseAnticheatBypass();
-					}
-
 					batch.QueueVotingComplete(votes, null, false);
 					batch.QueueCloseMeeting();
-
 					batch.FinishBatch();
 				}
 			}

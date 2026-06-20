@@ -1,9 +1,5 @@
 ﻿using AmongUs.Data.Player;
-using AmongUs.InnerNet.GameDataMessages;
 using HarmonyLib;
-using Hazel;
-using System.Collections.Generic;
-using InnerNet;
 
 namespace HydraMenu.features
 {
@@ -116,63 +112,5 @@ namespace HydraMenu.features
 				if(enabled) PlayerControl.LocalPlayer.RemainingEmergencies = 999999;
 			}
 		}
-
-		public static bool UseBypassRpc { get; set; } = true;
-
-
-		[HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartRpcImmediately))]
-		class RawRPC
-		{
-			static bool Prefix(ref MessageWriter __result, uint targetNetId, byte callId, int targetClientId)
-			{
-				if(!UseBypassRpc || callId == (byte)RpcCalls.CheckName || callId == (byte)RpcCalls.CheckMurder || callId == (byte)RpcCalls.CheckVanish || callId == (byte)RpcCalls.CheckAppear) return true;
-
-				Network.BatchedMessage batch = new Network.BatchedMessage(targetClientId);
-				batch.UseAnticheatBypass();
-
-				batch.writer.StartMessage((byte)GameDataTypes.RpcFlag);
-				batch.writer.WritePacked(targetNetId);
-				batch.writer.Write(callId);
-
-				__result = batch.writer;
-				return false;
-			}
-		}
-
-		[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
-		public static class CustomChat
-		{
-			public static bool Enabled { get; set; } = false;
-			public static byte size = 1;
-
-			public static List<string> colors = new List<string>()
-			{
-				"black",
-				"blue",
-				"green",
-				"orange",
-				"purple",
-				"red",
-				"white",
-				"yellow"
-			};
-
-			public static byte colorIndex = 0;
-
-			static bool Prefix(PlayerControl __instance, string chatText)
-			{
-				if(!Enabled) return true;
-
-				string message = $"<size={size}><color={colors[colorIndex]}>{chatText}";
-
-				Network.BatchedMessage batch = new Network.BatchedMessage();
-				batch.UseAnticheatBypass();
-				batch.QueueSendChat(__instance, message);
-				batch.FinishBatch();
-
-				return false;
-			}
-		}
-
 	}
 }
