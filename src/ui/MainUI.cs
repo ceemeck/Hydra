@@ -84,6 +84,8 @@ namespace HydraMenu.ui
 			}
 
 			HandleBoxMovement();
+
+			SettingsManager.Update();
 		}
 
 		public void OnGUI()

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace HydraMenu;
 
-[BepInPlugin("net.cemk.hydramenufork", "Hydra", "1.8.3.0")]
+[BepInPlugin("com.mrd.hydramenu", "Hydra", "1.8.3.0")]
 [BepInProcess("Among Us.exe")]
 internal class Hydra : BasePlugin
 {
@@ -24,6 +24,8 @@ internal class Hydra : BasePlugin
 	public override void Load()
 	{
 		OpenMenuKey = Config.Bind("General", "OpenMenuKey", KeyCode.Insert, "The key used to open the menu");
+
+		SettingsManager.Init(Config);
 
 		Harmony harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
 		harmony.PatchAll();
