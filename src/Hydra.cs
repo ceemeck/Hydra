@@ -1,14 +1,16 @@
-﻿using BepInEx;
+using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using HydraMenu.features;
 using HydraMenu.routines;
 using HydraMenu.ui;
+using UnityEngine;
 
 namespace HydraMenu;
 
-[BepInPlugin("com.mrd.hydramenu", "Hydra", "1.8.3.0")]
+[BepInPlugin("net.cemk.hydramenufork", "Hydra", "1.8.3.0")]
 [BepInProcess("Among Us.exe")]
 internal class Hydra : BasePlugin
 {
@@ -17,8 +19,12 @@ internal class Hydra : BasePlugin
 	public static RoutineManager routines;
 	public static NotificationManager notifications;
 
+	public static ConfigEntry<KeyCode> OpenMenuKey;
+
 	public override void Load()
 	{
+		OpenMenuKey = Config.Bind("General", "OpenMenuKey", KeyCode.Insert, "The key used to open the menu");
+
 		Harmony harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
 		harmony.PatchAll();
 

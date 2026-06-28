@@ -1,4 +1,4 @@
-﻿using HydraMenu.ui.sections;
+using HydraMenu.ui.sections;
 using System;
 using UnityEngine;
 
@@ -62,7 +62,7 @@ namespace HydraMenu.ui
 
 		public void Update()
 		{
-			if(Input.GetKeyDown(KeyCode.Insert)) visible = !visible;
+			if(Input.GetKeyDown(Hydra.OpenMenuKey.Value)) visible = !visible;
 
 			// Tool to test the notifications system
 			if(Input.GetKeyDown(KeyCode.F6))
